@@ -1,26 +1,9 @@
 plugins {
-    kotlin("jvm") version "1.9.21"
+    id("com.android.application") version "8.1.2" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
     id("com.diffplug.spotless") version "6.23.3"
 }
 
-group = "io.github.mathias8dev"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(17)
-}
 
 spotless {
     kotlin {
