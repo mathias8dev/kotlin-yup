@@ -4,6 +4,8 @@ import io.github.mathias8dev.yup.Yup
 import io.github.mathias8dev.yup.constraintsListOf
 import io.github.mathias8dev.yup.stateList
 
+
+
 fun main() {
     val standardConstraints = Yup.ValidationConstraints {
         required {
@@ -18,12 +20,18 @@ fun main() {
             length = 10
             errorMessage = "The maximum length should be 10"
         }
+
+        custom {
+            errorMessage = "This should be exactly 6 length"
+            onValidate {
+                it.toString().length == 6
+            }
+        }
     }
 
-    standardConstraints.debug()
 
-    val validator = Yup.statefulValidator(Yup.reactiveValidation) {
-        initialState {
+    val validator = Yup.statefulValidator(Yup.reactiveValidation, Yup.preserveDateType) {
+        initialStateList {
             stateList(
                 "username" to "mathias8dev"
             )

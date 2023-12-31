@@ -2,15 +2,17 @@ package io.github.mathias8dev.yup
 
 
 class StateHolder internal constructor(
-    private val state: MutableMap<String, String> = mutableMapOf()
+    private val state: MutableMap<String, Any?> = mutableMapOf()
 ) {
     private var updateListener: StateUpdateListener?=null
 
-    fun get(key: String): String? = state[key]
+    fun get(key: String): Any? = state[key]
+
+    fun getAsString(key: String): String? = state[key]?.toString()
 
     fun getAll() = state.toMap()
 
-    fun set(key: String, value: String) {
+    fun set(key: String, value: Any?) {
         if (state.containsKey(key)) {
             updateListener?.onPreUpdate()
             state[key] = value
@@ -18,7 +20,7 @@ class StateHolder internal constructor(
         }
     }
 
-    fun set(keyPair: Pair<String, String>) {
+    fun set(keyPair: Pair<String, Any?>) {
         set(keyPair.first, keyPair.second)
     }
 

@@ -4,6 +4,7 @@ package io.github.mathias8dev.yup
 object Yup {
 
     val reactiveValidation = Options.REACTIVE
+    val preserveDateType = Options.PRESERVE_TYPE
     internal const val DEFAULT_MIN_LENGTH = 1
     internal const val DEFAULT_MAX_LENGTH = 8
 
@@ -35,19 +36,16 @@ object Yup {
 
 
     enum class Options {
-        REACTIVE
+        REACTIVE,
+        PRESERVE_TYPE
     }
 
 
+    interface Record
+
 
 }
 
-fun constraintsListOf(vararg args: Pair<String, ValidationConstraints>): Map<String, ValidationConstraints> {
-    return mapOf(*args)
-}
 
-fun stateList(vararg args: Pair<String, String>): Map<String, String> {
-    return mapOf(*args)
-}
 
 

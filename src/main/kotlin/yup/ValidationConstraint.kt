@@ -3,17 +3,20 @@ package io.github.mathias8dev.yup
 
 sealed class ValidationConstraint(
     open var errorMessage: kotlin.String? = null,
-) : SelfValidation {
+)  {
+
+    internal abstract fun validate(value: Any?): kotlin.String?
+
     data class MinLength(
         var length: Int,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
+        override fun validate(value: Any?): kotlin.String? {
             println("MinLength: The error message is $errorMessage")
-            println("MinLength: validate called with ${value==null}")
-            val message =  value?.let {
+            println("MinLength: validate called with ${value}")
+            val message = value?.toString()?.let {
                 if (it.length < length) errorMessage else null
-            } ?: errorMessage
+            }
             println("MinLength: The error message is $message")
             return message
         }
@@ -23,11 +26,11 @@ sealed class ValidationConstraint(
         var length: Int,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
+        override fun validate(value: Any?): kotlin.String? {
             println("MaxLength: validate called with $value")
-            return value?.let {
+            return value?.toString()?.let {
                 if (it.length > length) errorMessage else null
-            } ?: errorMessage
+            }
         }
     }
 
@@ -35,9 +38,9 @@ sealed class ValidationConstraint(
         var required: Boolean = false,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
+        override fun validate(value: Any?): kotlin.String? {
             println("Required: validate called with $value")
-            return if (value.isNullOrEmpty()) errorMessage else null
+            return if (value?.toString().isNullOrEmpty()) errorMessage else null
         }
     }
 
@@ -45,8 +48,8 @@ sealed class ValidationConstraint(
         var use: Boolean = false,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
-            return if (use && value?.matches(Validator.integerRegex) == false)
+        override fun validate(value: Any?): kotlin.String? {
+            return if (use && value?.toString()?.matches(Validator.integerRegex) == false)
                 errorMessage
             else null
         }
@@ -56,8 +59,8 @@ sealed class ValidationConstraint(
         var use: Boolean = false,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
-            return if (use && value?.matches(Validator.realRegex) == false)
+        override fun validate(value: Any?): kotlin.String? {
+            return if (use && value?.toString()?.matches(Validator.realRegex) == false)
                 errorMessage
             else null
         }
@@ -67,8 +70,8 @@ sealed class ValidationConstraint(
         var use: Boolean = false,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
-            return if (use && value.isNullOrBlank()) errorMessage else null
+        override fun validate(value: Any?): kotlin.String? {
+            return if (use && value?.toString().isNullOrBlank()) errorMessage else null
         }
     }
 
@@ -76,8 +79,8 @@ sealed class ValidationConstraint(
         var use: Boolean = false,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
-            return if (use && value?.matches(Validator.emailRegex) == false)
+        override fun validate(value: Any?): kotlin.String? {
+            return if (use && value?.toString()?.matches(Validator.emailRegex) == false)
                 errorMessage
             else null
         }
@@ -87,8 +90,8 @@ sealed class ValidationConstraint(
         var use: Boolean = false,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
-            return if (use && value?.matches(Validator.passwordRegex) == false)
+        override fun validate(value: Any?): kotlin.String? {
+            return if (use && value?.toString()?.matches(Validator.passwordRegex) == false)
                 errorMessage
             else null
         }
@@ -98,13 +101,48 @@ sealed class ValidationConstraint(
         var regex: kotlin.text.Regex? = null,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
-        override fun validate(value: kotlin.String?): kotlin.String? {
-            return if (regex != null && value?.matches(regex!!) == false)
+        override fun validate(value: Any?): kotlin.String? {
+            return if (regex != null && value?.toString()?.matches(regex!!) == false)
                 errorMessage
             else null
         }
     }
 
+
+    data class Custom(
+        var onValidate: CustomConstraintResult? = null,
+        override var errorMessage: kotlin.String? = null
+    ) : ValidationConstraint(errorMessage = errorMessage) {
+        override fun validate(value: Any?): kotlin.String? {
+            return onValidate?.let {
+                if (!it.onValidate(value))
+                    errorMessage
+                else null
+            }
+        }
+
+        fun liteCopy(): Custom {
+            return Custom(
+                onValidate = onValidate,
+                errorMessage = errorMessage
+            )
+        }
+
+        fun onValidate(callback: (value: Any?)->Boolean): CustomConstraintResult {
+            return object : CustomConstraintResult {
+                override fun onValidate(value: Any?): Boolean {
+                    return callback(value)
+                }
+
+            }
+        }
+    }
+
+}
+
+interface CustomConstraintResult {
+
+    fun onValidate(value: Any?) : Boolean
 }
 
 

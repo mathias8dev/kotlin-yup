@@ -8,7 +8,7 @@ sealed class Validator(
 
     val errors = Errors(errors = mutableMapOf(*validationConstraints.map {it.key to listOf<String>() }.toTypedArray()))
 
-    protected fun internalValidate(state: Map<String, String>): Errors {
+    protected fun internalValidate(state: Map<String, Any?>): Errors {
         validationConstraints.forEach { (key, constraints) ->
             val stateValue = state[key]
             val errorMessages = constraints.validate(stateValue)
@@ -50,7 +50,7 @@ sealed class Validator(
     ): Validator(
         validationConstraints = validationConstraints,
     ) {
-        fun validate(state: Map<String, String>): Errors {
+        fun validate(state: Map<String, Any?>): Errors {
             return super.internalValidate(state)
         }
     }

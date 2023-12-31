@@ -5,7 +5,7 @@ data class ValidationConstraints internal constructor(
     private val constraints: MutableList<ValidationConstraint> = mutableListOf()
 ) {
 
-    fun validate(value: String?): List<String> {
+    fun validate(value: Any?): List<String> {
         val errors = mutableListOf<String>()
         constraints.forEach {
             it.validate(value)?.let { errorMessage -> errors.add(errorMessage) }
@@ -35,6 +35,7 @@ data class ValidationConstraints internal constructor(
         private lateinit var realConstraint: ValidationConstraint.Real
         private lateinit var stringConstraint: ValidationConstraint.String
         private lateinit var regexConstraint: ValidationConstraint.Regex
+        private lateinit var customConstraint: ValidationConstraint.Custom
 
         fun minLength(builder: ValidationConstraint.MinLength.() -> Unit) {
             if (!::minLengthConstraint.isInitialized) {
@@ -111,6 +112,13 @@ data class ValidationConstraints internal constructor(
             builder(regexConstraint)
         }
 
+        fun custom(builder: ValidationConstraint.Custom.() -> CustomConstraintResult) {
+            if (!::customConstraint.isInitialized) {
+                customConstraint = ValidationConstraint.Custom()
+            }
+            customConstraint.onValidate = builder(customConstraint)
+        }
+
         internal fun build() = ValidationConstraints().apply {
             if (::minLengthConstraint.isInitialized) {
                 add(minLengthConstraint.copy())
@@ -145,6 +153,10 @@ data class ValidationConstraints internal constructor(
 
             if (::emailConstraint.isInitialized) {
                 add(emailConstraint.copy())
+            }
+
+            if (::customConstraint.isInitialized) {
+                add(customConstraint.liteCopy())
             }
         }
 
