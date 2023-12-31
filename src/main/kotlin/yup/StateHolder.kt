@@ -4,7 +4,7 @@ package io.github.mathias8dev.yup
 class StateHolder internal constructor(
     private val state: MutableMap<String, String> = mutableMapOf()
 ) {
-    private var updateListener: Yup.StateUpdateListener?=null
+    private var updateListener: StateUpdateListener?=null
 
     fun get(key: String): String? = state[key]
 
@@ -22,7 +22,7 @@ class StateHolder internal constructor(
         set(keyPair.first, keyPair.second)
     }
 
-    internal fun setUpdateListener(listener: Yup.StateUpdateListener) {
+    internal fun setUpdateListener(listener: StateUpdateListener) {
         updateListener = listener
     }
 }

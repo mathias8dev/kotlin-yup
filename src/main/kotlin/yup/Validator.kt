@@ -24,7 +24,7 @@ sealed class Validator(
         private val useReactiveValidation: Boolean = false,
     ): Validator(
         validationConstraints = validationConstraints,
-    ), Yup.StateUpdateListener {
+    ), StateUpdateListener {
 
         init {
             state.setUpdateListener(this)

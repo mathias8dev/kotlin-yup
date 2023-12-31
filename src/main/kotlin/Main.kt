@@ -1,7 +1,8 @@
 package io.github.mathias8dev
 
 import io.github.mathias8dev.yup.Yup
-import io.github.mathias8dev.yup.constraintsMapOf
+import io.github.mathias8dev.yup.constraintsListOf
+import io.github.mathias8dev.yup.stateList
 
 fun main() {
     val standardConstraints = Yup.ValidationConstraints {
@@ -22,9 +23,17 @@ fun main() {
     standardConstraints.debug()
 
     val validator = Yup.statefulValidator(Yup.reactiveValidation) {
-        constraintsMapOf(
-            "username" to standardConstraints
-        )
+        initialState {
+            stateList(
+                "username" to "mathias8dev"
+            )
+        }
+
+        constraints {
+            constraintsListOf(
+                "username" to standardConstraints
+            )
+        }
     }
 
     println("Hello world")
@@ -32,7 +41,5 @@ fun main() {
     validator.validate().getAll().forEach {
         println(it)
     }
-
-
 
 }
