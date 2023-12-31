@@ -1,12 +1,17 @@
 package io.github.mathias8dev.yup
 
+import android.os.Parcelable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateMapOf
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
+
 
 sealed class Validator(
     private val validationConstraints: Map<String, ValidationConstraints>,
 ) {
 
-
-    val errors = Errors(errors = mutableMapOf(*validationConstraints.map {it.key to listOf<String>() }.toTypedArray()))
+    val errors = Errors(errors = mutableStateMapOf(*validationConstraints.map {it.key to listOf<String>() }.toTypedArray()))
 
     protected fun internalValidate(state: Map<String, Any?>): Errors {
         validationConstraints.forEach { (key, constraints) ->
@@ -17,6 +22,7 @@ sealed class Validator(
 
         return errors.copy()
     }
+
 
     class StatefulValidator(
         validationConstraints: Map<String, ValidationConstraints>,
@@ -46,7 +52,7 @@ sealed class Validator(
     }
 
     class StatelessValidator(
-        validationConstraints: Map<String, ValidationConstraints>,
+        validationConstraints: @RawValue Map<String, ValidationConstraints>,
     ): Validator(
         validationConstraints = validationConstraints,
     ) {

@@ -1,5 +1,7 @@
 package io.github.mathias8dev.yup
 
+import androidx.compose.runtime.mutableStateMapOf
+
 
 class StatefulValidatorBuilder internal constructor(
     private val options: Array<out Yup.Options>
@@ -19,8 +21,8 @@ class StatefulValidatorBuilder internal constructor(
     ) {
         val record = builder()
         initialState = if (options.contains(Yup.Options.PRESERVE_TYPE))
-             record.toMap()
-        else  record.toStringMap()
+            record.toMap()
+        else record.toStringMap()
     }
 
 
@@ -36,10 +38,11 @@ class StatefulValidatorBuilder internal constructor(
         return Validator.StatefulValidator(
             useReactiveValidation = options.contains(Yup.Options.REACTIVE),
             validationConstraints = validationConstraints.toMap(),
-            state = StateHolder(state = mutableMapOf(*validationConstraints.map {
-                it.key to initialState[it.key]
-            }
-                .toTypedArray()))
+            state = StateHolder(
+                state = mutableStateMapOf(*validationConstraints.map {
+                    it.key to initialState[it.key]
+                }.toTypedArray())
+            )
         )
     }
 }

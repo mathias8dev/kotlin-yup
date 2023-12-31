@@ -3,14 +3,21 @@ package io.github.mathias8dev.sample
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.mathias8dev.sample.ui.theme.SampleTheme
+import io.github.mathias8dev.yup.Validator
+import io.github.mathias8dev.yup.Yup
+import io.github.mathias8dev.yup.constraintsListOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +28,55 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Greeting("Android")
                 }
+                val validator = rememberFormValidator()
 
+                FormSample(formValidator = validator)
 
+            }
+        }
+    }
+}
+
+@Composable
+fun rememberFormValidator(): Validator.StatefulValidator {
+    return remember {
+        Yup.statefulValidator(Yup.reactiveValidation, Yup.preserveDateType) {
+            constraints {
+                constraintsListOf(
+                    "username" to Yup.ValidationConstraints {
+                        required {
+                            errorMessage = "This field is required"
+                        }
+                        minLength {
+                            length = 4
+                            errorMessage = "The minimum length should be 4"
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun FormSample(
+    formValidator: Validator.StatefulValidator
+) {
+
+    Column {
+        TextField(
+            value = formValidator.state.getAsString("username") ?: "",
+            onValueChange = {
+                formValidator.state.set("username", it)
+            }
+        )
+
+        formValidator.errors.entries().forEach {
+            it.value.forEach {errorMessage ->
+                Text(
+                    text = errorMessage,
+                    color = Color.Red.copy(alpha = 0.6f)
+                )
             }
         }
     }
