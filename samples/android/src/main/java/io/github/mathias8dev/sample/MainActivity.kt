@@ -43,13 +43,14 @@ fun rememberFormValidator(): Validator.StatefulValidator {
         Yup.statefulValidator(Yup.reactiveValidation, Yup.preserveDateType) {
             constraints {
                 constraintsListOf(
-                    "username" to Yup.ValidationConstraints {
+                    "age" to Yup.ValidationConstraints {
                         required {
                             errorMessage = "This field is required"
                         }
-                        minLength {
-                            length = 4
-                            errorMessage = "The minimum length should be 4"
+                        integer {
+                            minValue = 18
+                            maxValue = 60
+                            errorMessage = "Your old should be between 18 and 60"
                         }
                     }
                 )
@@ -65,9 +66,9 @@ fun FormSample(
 
     Column {
         TextField(
-            value = formValidator.state.getAsString("username") ?: "",
+            value = formValidator.state.getAsString("age") ?: "",
             onValueChange = {
-                formValidator.state.set("username", it)
+                formValidator.state.set("age", it)
             }
         )
 

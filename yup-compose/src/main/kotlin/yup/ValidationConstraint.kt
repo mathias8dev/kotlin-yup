@@ -1,9 +1,11 @@
 package io.github.mathias8dev.yup
 
+import android.util.Log
+
 
 sealed class ValidationConstraint(
     open var errorMessage: kotlin.String? = null,
-)  {
+) {
 
     internal abstract fun validate(value: Any?): kotlin.String?
 
@@ -46,23 +48,44 @@ sealed class ValidationConstraint(
 
     data class Integer(
         var use: Boolean = false,
+        var minValue: Int? = null,
+        var maxValue: Int? = null,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
         override fun validate(value: Any?): kotlin.String? {
             return if (use && value?.toString()?.matches(Validator.integerRegex) == false)
                 errorMessage
-            else null
+            else {
+                val intValue = value.toString().toInt()
+                Log.d("ValidationConstraint", "minValue: $minValue; maxValue: $maxValue; intValue: $intValue")
+                if ((minValue != null && minValue!! > intValue) ||
+                    (maxValue != null && maxValue!! < intValue)
+                )
+                    errorMessage
+                else null
+            }
+
         }
     }
 
     data class Real(
         var use: Boolean = false,
+        var minValue: Float? = null,
+        var maxValue: Float? = null,
         override var errorMessage: kotlin.String? = null
     ) : ValidationConstraint(errorMessage = errorMessage) {
         override fun validate(value: Any?): kotlin.String? {
             return if (use && value?.toString()?.matches(Validator.realRegex) == false)
                 errorMessage
-            else null
+            else{
+                val floatValue = value.toString().toFloat()
+                Log.d("ValidationConstraint", "minValue: $minValue; maxValue: $maxValue; intValue: $floatValue")
+                if ((minValue != null && minValue!! > floatValue) ||
+                    (maxValue != null && maxValue!! < floatValue)
+                )
+                    errorMessage
+                else null
+            }
         }
     }
 
@@ -128,7 +151,7 @@ sealed class ValidationConstraint(
             )
         }
 
-        fun onValidate(callback: (value: Any?)->Boolean): CustomConstraintResult {
+        fun onValidate(callback: (value: Any?) -> Boolean): CustomConstraintResult {
             return object : CustomConstraintResult {
                 override fun onValidate(value: Any?): Boolean {
                     return callback(value)
@@ -142,7 +165,7 @@ sealed class ValidationConstraint(
 
 interface CustomConstraintResult {
 
-    fun onValidate(value: Any?) : Boolean
+    fun onValidate(value: Any?): Boolean
 }
 
 
