@@ -3,7 +3,7 @@ plugins {
     id("com.diffplug.spotless") version "6.23.3"
 }
 
-group = "com.mathias8dev"
+group = "io.github.mathias8dev"
 version = "1.0-SNAPSHOT"
 
 repositories {
