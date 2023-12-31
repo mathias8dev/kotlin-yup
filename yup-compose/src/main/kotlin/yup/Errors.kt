@@ -19,6 +19,8 @@ data class Errors(
 
     fun entries() = errors.toMap().entries
 
+    fun isEmpty(): Boolean = getAll().isEmpty()
+
     internal fun set(key: String, value: List<String>) {
         if (errors.containsKey(key)) errors[key] = value
     }
