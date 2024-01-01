@@ -17,9 +17,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun InputField(
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp),
+    modifier: Modifier = Modifier,
     value: String,
     placeholderText: String,
     hasErrors: Boolean,

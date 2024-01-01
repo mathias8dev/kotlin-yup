@@ -1,18 +1,19 @@
 package io.github.mathias8dev.sample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -81,14 +83,24 @@ fun rememberFormValidator(): Validator.StatefulValidator {
         Yup.statefulValidator(Yup.reactiveValidation, Yup.preserveDateType) {
             initialStateList {
                 mapOf(
-                    "firstname" to "mathias",
+                    "firstname" to "Mathias",
                     "lastname" to "KALIPE"
                 )
             }
             constraints {
                 constraintsListOf(
                     "firstname" to nameValidator,
-                    "lastname" to nameValidator
+                    "lastname" to nameValidator,
+                    "email" to Yup.ValidationConstraints {
+                        required {
+                            errorMessage = "The email address is required"
+                        }
+
+                        email {
+                            use = true
+                            errorMessage = "This email address is invalid"
+                        }
+                    }
                 )
             }
         }
@@ -109,9 +121,16 @@ fun FormSample(
         mutableStateOf(emptyList<String>())
     }
 
+    val modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)
+
+    val context = LocalContext.current
+
     Column {
 
         InputField(
+            modifier = modifier,
             value = formValidator.state.getAsString("firstname") ?: "",
             placeholderText = "Type your firstname",
             hasErrors = formValidator.errors.get("firstname").isNotEmpty(),
@@ -126,6 +145,7 @@ fun FormSample(
 
 
         InputField(
+            modifier = modifier,
             value = formValidator.state.getAsString("lastname") ?: "",
             placeholderText = "Type your lastname",
             hasErrors = formValidator.errors.get("lastname").isNotEmpty(),
@@ -138,6 +158,34 @@ fun FormSample(
             }
         )
 
+        InputField(
+            modifier = modifier,
+            value = formValidator.state.getAsString("email") ?: "",
+            placeholderText = "Type your email address",
+            hasErrors = formValidator.errors.get("email").isNotEmpty(),
+            onErrorInfoClicked = {
+                showErrorsDialog = true
+                errorMessages = formValidator.errors.get("email")
+            },
+            onValueChange = {
+                formValidator.state.set("email", it)
+            }
+        )
+
+        Button(
+            modifier = modifier.height(48.dp),
+            enabled = formValidator.errors.isEmpty(),
+            shape = RoundedCornerShape(8.dp),
+            onClick = {
+                Toast.makeText(
+                    context,
+                    "Your form is submitted successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        ) {
+            Text(text = "Submit")
+        }
 
     }
 
@@ -159,9 +207,12 @@ fun FormSample(
 
             errorMessages.forEach {
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
                     text = it,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
                 )
             }
         }
