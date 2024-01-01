@@ -246,7 +246,7 @@ fun SampleForm(
             }
         )
 
-        InputField(
+        TextInput(
             modifier = modifier,
             value = formValidator.state.getAsString("email") ?: "",
             placeholderText = "Type your email address",
