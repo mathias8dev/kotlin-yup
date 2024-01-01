@@ -3,32 +3,66 @@
 
 This version work only with compose. If you want to use it in another environments please wait a few days (I will publish a kotlin multiplatform version) or feel free to make a pull request.
 
+<br><br>
+[![Jitpack latest version](https://jitpack.io/v/mathias8dev/kotlin-yup.svg)](https://jitpack.io/#mathias8dev/kotlin-yup)
 [![Code Style](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io)
 [![Apache License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](LICENSE)
 
-## Installation
 
-![Gradle](docs/gradle.png)
+## Setup
+### 1. Import JitPack Android Library
+Add `maven { url 'https://jitpack.io' }` in
+<details open>
+  <summary>groovy - settings.gradle</summary>
 
-```groovy
-implementation 'io.github.mathias8dev.kotlin-yup:kotlin-yup:1.0.0'
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
+</details>
 
-![Gradle](docs/gradle.png) (Kotlin DSL)
+<details open>
+  <summary>kotlin - settings.gradle.kts</summary>
 
-```kotlin
-implementation("io.github.mathias8dev.kotlin-yup:kotlin-yup:1.0.0")
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+
+        maven ("https://jitpack.io")
+    }
+}
 ```
+</details>
 
-![Maven](docs/maven.png)
+### 2. Add dependency
+<details open>
+  <summary>groovy - build.gradle</summary>
 
-```xml
-<dependency>
-  <groupId>io.github.mathias8dev</groupId>
-  <artifactId>kotlin-yup</artifactId>
-  <version>1.0.0</version>
-</dependency>
+```gradle
+dependencies {
+    implementation "com.github.mathias8dev:kotlin-yup:latest-version"
+}
 ```
+</details>
+<details open>
+  <summary>kotlin - build.gradle.kts</summary>
+
+```gradle
+dependencies {
+    implementation("com.github.mathias8dev:kotlin-yup:latest-version")
+}
+```
+</details>
 
 
 
