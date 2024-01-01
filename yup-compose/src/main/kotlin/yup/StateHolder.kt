@@ -24,9 +24,9 @@ class StateHolder internal constructor(
     fun set(key: String, value: Any?) {
 
         if (state.containsKey(key)) {
-            updateListener?.onPreUpdate()
+            updateListener?.onPreUpdate(key)
             state[key] = value
-            updateListener?.onPostUpdate()
+            updateListener?.onPostUpdate(key)
         }
     }
 
