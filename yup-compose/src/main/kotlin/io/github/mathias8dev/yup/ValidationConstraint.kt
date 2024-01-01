@@ -1,7 +1,5 @@
 package io.github.mathias8dev.yup
 
-import android.util.Log
-
 
 sealed class ValidationConstraint(
     open var errorMessage: kotlin.String? = null,
@@ -42,7 +40,11 @@ sealed class ValidationConstraint(
     ) : ValidationConstraint(errorMessage = errorMessage) {
         override fun validate(value: Any?): kotlin.String? {
             println("Required: validate called with $value")
-            return if (value?.toString().isNullOrEmpty()) errorMessage else null
+            return if (value?.toString().isNullOrEmpty()) {
+                errorMessage
+            }else {
+                null
+            }
         }
     }
 
@@ -57,7 +59,6 @@ sealed class ValidationConstraint(
                 errorMessage
             else {
                 val intValue = value.toString().toInt()
-                Log.d("ValidationConstraint", "minValue: $minValue; maxValue: $maxValue; intValue: $intValue")
                 if ((minValue != null && minValue!! > intValue) ||
                     (maxValue != null && maxValue!! < intValue)
                 )
@@ -79,7 +80,6 @@ sealed class ValidationConstraint(
                 errorMessage
             else{
                 val floatValue = value.toString().toFloat()
-                Log.d("ValidationConstraint", "minValue: $minValue; maxValue: $maxValue; intValue: $floatValue")
                 if ((minValue != null && minValue!! > floatValue) ||
                     (maxValue != null && maxValue!! < floatValue)
                 )

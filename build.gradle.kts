@@ -4,10 +4,16 @@ plugins {
     id("com.diffplug.spotless") version "6.23.3"
 }
 
-
 spotless {
     kotlin {
         target("**/*.kt")
+        targetExclude("${layout.buildDirectory}/**/*.kt", "bin/**/*.kt", "buildSrc/**/*.kt")
         ktlint("1.1.0")
+            .setEditorConfigPath("$projectDir/.editorconfig")
+    }
+
+    kotlinGradle {
+        target("*.gradle.kts")
+        ktlint()
     }
 }

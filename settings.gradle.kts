@@ -10,10 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven(url="https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
-
 
 plugins {
     id("com.dropbox.focus") version "0.4.0"

@@ -10,7 +10,7 @@ class StatefulValidatorBuilder internal constructor(
     private var initialState = mapOf<String, Any?>()
     private lateinit var validationConstraints: Map<String, ValidationConstraints>
 
-    fun initialStateList(
+    fun initialStateMap(
         builder: () -> Map<String, Any?>
     ) {
         initialState = builder()
