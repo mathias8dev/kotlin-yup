@@ -174,7 +174,7 @@ fun FormSample(
 
         Button(
             modifier = modifier.height(48.dp),
-            enabled = formValidator.errors.isEmpty(),
+            enabled = formValidator.isValid,
             shape = RoundedCornerShape(8.dp),
             onClick = {
                 Toast.makeText(
