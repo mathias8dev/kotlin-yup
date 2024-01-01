@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import io.github.mathias8dev.sample.ui.composables.FormSample
+import io.github.mathias8dev.sample.ui.composables.SampleForm
 import io.github.mathias8dev.sample.ui.theme.SampleTheme
 import io.github.mathias8dev.yup.Validator
 import io.github.mathias8dev.yup.Yup
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val validator = rememberFormValidator()
 
-                    FormSample(
+                    SampleForm(
                         formValidator = validator
                     )
                 }
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun rememberFormValidator(): Validator.StatefulValidator {
-    val nameValidator = remember {
+    val nameValidatorConstraints = remember {
         Yup.ValidationConstraints {
             required {
                 errorMessage = "This field is required"
@@ -66,8 +66,8 @@ fun rememberFormValidator(): Validator.StatefulValidator {
             }
             constraints {
                 constraintsListOf(
-                    "firstname" to nameValidator,
-                    "lastname" to nameValidator,
+                    "firstname" to nameValidatorConstraints,
+                    "lastname" to nameValidatorConstraints,
                     "email" to Yup.ValidationConstraints {
                         required {
                             errorMessage = "The email address is required"

@@ -19,7 +19,7 @@ object Yup {
         return statefulValidatorBuilder.build()
     }
 
-    fun statelessValidator(builder: ValidationConstraints.Builder.() -> List<Pair<String, ValidationConstraints>>): Validator.StatelessValidator {
+    fun statelessValidator(builder: ValidationConstraints.Builder.() -> Map<String, ValidationConstraints>): Validator.StatelessValidator {
         val constraintsBuilder = ValidationConstraints.Builder()
         val validationConstraints = builder(constraintsBuilder)
         return Validator.StatelessValidator(

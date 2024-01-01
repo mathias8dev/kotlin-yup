@@ -29,7 +29,7 @@ import io.github.mathias8dev.yup.Validator
 
 
 @Composable
-fun FormSample(
+fun SampleForm(
     formValidator: Validator.StatefulValidator
 ) {
 
@@ -49,7 +49,7 @@ fun FormSample(
 
     Column {
 
-        InputField(
+        TextInput(
             modifier = modifier,
             value = formValidator.state.getAsString("firstname") ?: "",
             placeholderText = "Type your firstname",
@@ -64,7 +64,7 @@ fun FormSample(
         )
 
 
-        InputField(
+        TextInput(
             modifier = modifier,
             value = formValidator.state.getAsString("lastname") ?: "",
             placeholderText = "Type your lastname",
@@ -78,7 +78,7 @@ fun FormSample(
             }
         )
 
-        InputField(
+        TextInput(
             modifier = modifier,
             value = formValidator.state.getAsString("email") ?: "",
             placeholderText = "Type your email address",

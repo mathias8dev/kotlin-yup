@@ -71,6 +71,10 @@ sealed class Validator(
         fun validate(state: Map<String, Any?>): Errors {
             return super.internalValidate(state)
         }
+
+        fun validate(state: Yup.Record): Errors {
+            return super.internalValidate(state.toMap())
+        }
     }
 
     companion object {
