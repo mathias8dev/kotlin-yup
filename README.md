@@ -1,15 +1,9 @@
-![Valiktor](docs/logo.png)
+### kotlin-yup
+> kotlin-yup is a type-safe, powerful and extensible fluent DSL to validate objects in Kotlin.
 
-> Kotlin-yup is a type-safe, powerful and extensible fluent DSL to validate objects in Kotlin.
+This version work only with compose. If you want to use it in another environments please wait a few days (I will publish a kotlin multiplatform version) or feel free to make a pull request.
 
-This version work only with compose. If you want to use it in another environnments please wait a few days (I will publish a kotlin multiplatform version) or feel free to make a pull request.
-
-[![Build Status](https://travis-ci.org/valiktor/valiktor.svg?branch=master)](https://travis-ci.org/valiktor/valiktor)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/valiktor/valiktor?branch=master&svg=true)](https://ci.appveyor.com/project/rodolphocouto/valiktor)
-[![Coverage Status](https://codecov.io/gh/valiktor/valiktor/branch/master/graph/badge.svg)](https://codecov.io/gh/valiktor/valiktor)
-[![Quality Status](https://api.codacy.com/project/badge/Grade/1826622893374838856952b9c013793a)](https://www.codacy.com/app/rodolphocouto/valiktor?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=valiktor/valiktor&amp;utm_campaign=Badge_Grade)
 [![Code Style](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io)
-[![Maven Central](https://img.shields.io/maven-central/v/org.valiktor/valiktor-core.svg)](https://search.maven.org/search?q=g:org.valiktor)
 [![Apache License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](LICENSE)
 
 ## Installation
@@ -42,8 +36,8 @@ implementation("io.github.mathias8dev.kotlin-yup:kotlin-yup:1.0.0")
 
 **Stateless Validation**
 <p>
-  The stateless validation feature is usefull if you want to own yourself the data to validate.
-  To use such feature, just use this snipet.
+  The stateless validation feature is usefully if you want to own yourself the data to validate.
+  To use such feature, just use this snippet.
 </p>
 
 ```kotlin
@@ -284,7 +278,7 @@ fun SampleForm(
 ### How it works
 
 To use Yup, you just have to import Yup object from io.github.mathias8dev.yup.Yup
-All of yup's' api is namespaced by Yup.
+All of yup's api is namespaced by Yup.
 
 In the scope of Yup.statefulValidator(...), you have access to
 - initialStateMap // Here, you can like we did bellow, use stateMapOf to return your state
