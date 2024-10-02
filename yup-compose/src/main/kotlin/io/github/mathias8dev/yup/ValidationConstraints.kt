@@ -2,13 +2,17 @@ package io.github.mathias8dev.yup
 
 
 data class ValidationConstraints internal constructor(
-    private val constraints: MutableList<ValidationConstraint> = mutableListOf()
+    private val constraints: MutableList<ValidationConstraint> = mutableListOf(),
 ) {
 
     fun validate(value: Any?): List<String> {
         val errors = mutableListOf<String>()
-        constraints.forEach {
-            it.validate(value)?.let { errorMessage -> errors.add(errorMessage) }
+        if (constraints.find { it is ValidationConstraint.Required && it.required } != null ||
+            !value?.toString().isNullOrBlank()
+        ) {
+            constraints.forEach {
+                it.validate(value)?.let { errorMessage -> errors.add(errorMessage) }
+            }
         }
 
         return errors

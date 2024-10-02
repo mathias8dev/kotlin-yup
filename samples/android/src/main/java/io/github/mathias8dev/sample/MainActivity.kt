@@ -44,6 +44,7 @@ fun rememberFormValidator(): Validator.StatefulValidator {
     val nameValidatorConstraints = remember {
         Yup.ValidationConstraints {
             required {
+                required = false
                 errorMessage = "This field is required"
             }
             minLength {
@@ -70,6 +71,7 @@ fun rememberFormValidator(): Validator.StatefulValidator {
                     "lastname" to nameValidatorConstraints,
                     "email" to Yup.ValidationConstraints {
                         required {
+                            required = false
                             errorMessage = "The email address is required"
                         }
 

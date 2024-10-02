@@ -72,7 +72,7 @@ configure<PublishingExtension> {
         register<MavenPublication>("release") {
             groupId = "io.github.mathias8dev"
             artifactId = "yup-compose"
-            version = "1.0.0"
+            version = "1.0.1"
 
             afterEvaluate {
                 from(components["release"])
